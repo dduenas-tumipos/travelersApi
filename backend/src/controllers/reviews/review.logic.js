@@ -15,8 +15,8 @@ exports.createNew = (params, result) => {
 };
 exports.getList = (params, result) => {
 	const ranking = params.ranking;
-	var condition = ranking ? { ranking: { [Op.like]: `%${ranking}%` } } : null;
-	Review.findAll({ where: condition})
+	var condition = ranking ? { ranking: { [Op.eq]: ranking } } : null;
+	Review.findAll({ where: condition, include: Destination })
 		.then(data => {
 			result(null, data);
 		})
@@ -37,11 +37,11 @@ exports.getById = (id, result) => {
 };
 exports.putUpdate = (id, params, result) => {
 	Review.update(params, {where: { id: id }})
-		.then(num => {
+		.then(num => {			
 			if (num == 1) {
-				result(null, data);
+				result(null, {changes: true});
 			} else {
-				result(null, data);
+				result(null, {changes: false});
 			}
 		})
 		.catch(err => {
@@ -50,12 +50,12 @@ exports.putUpdate = (id, params, result) => {
 		});
 };
 exports.delete = (id, result) => {
-	Review.destroy({}, {where: { id: id }})
+	Review.destroy({ where: { id: id } })
 		.then(num => {
 			if (num == 1) {
-				result(null, data);
+				result(null, {deleted: true});
 			} else {
-				result(null, data);
+				result(null, {deleted: false});
 			}
 		})
 		.catch(err => {

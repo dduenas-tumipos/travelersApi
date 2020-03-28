@@ -1,5 +1,10 @@
 module.exports = (sequelize, Sequelize) => {
+	const Destination = sequelize.define("destination");
 	const Review = sequelize.define("review", {
+		destinationId: {
+			type: Sequelize.INTEGER,
+			foreignKey: true
+		},
 		ranking: {
 		    type: Sequelize.INTEGER
 		},
@@ -7,11 +12,11 @@ module.exports = (sequelize, Sequelize) => {
 		    type: Sequelize.STRING
 		}
 	}, {
-        timestamps: true,
-        underscored: false
-        // createdAt
-        // created_at
-    });
+		timestamps: true,
+		paranoid: true
+	});
+
+	Review.belongsTo(Destination);
 
 	return Review;
 };

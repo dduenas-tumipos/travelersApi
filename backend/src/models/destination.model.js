@@ -1,4 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
+	const Review = sequelize.define("review");
 	const Destination = sequelize.define("destination", {
 		name: {
 			type: Sequelize.STRING
@@ -10,8 +11,11 @@ module.exports = (sequelize, Sequelize) => {
 			type: Sequelize.BOOLEAN
 		}
 	}, {
-		timestamps: false
+		timestamps: true,
+		paranoid: true
 	});
+
+	Destination.hasMany(Review);
 
 	return Destination;
 };

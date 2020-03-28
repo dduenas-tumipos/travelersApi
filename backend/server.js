@@ -7,11 +7,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // simple route
 app.get("/", (req, res) => {
+	// async
+		var fs = require("fs");
+		// request a
+		fs.readFile('sync.json','utf8',function(err,data){
+			if(!err) {
+			console.log(data);
+			}
+		});
+		// request b
+		console.log("Asynchronous programming example");
+	// server response
 	res.json({ message: "Welcome to the application." });
 });
-// Routes
-require("./src/routes/turorial.routes")(app);
-// Set port, listen for requests
+// routes
+require("./src/routes/destination.routes")(app);
+require("./src/routes/review.routes")(app);
+// set port, listen for requests
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}.`);

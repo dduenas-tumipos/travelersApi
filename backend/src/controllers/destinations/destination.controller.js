@@ -1,8 +1,8 @@
-const LogicLayer = require("./tutorial.logic");
+const LogicLayer = require("./destination.logic");
 //  CRUD
 exports.createNew = (req, res) => {
 	// Validate request
-	if (!req.body.title) {
+	if (!req.body.name) {
 		res.status(400).send({message: "Content can not be empty!"});
 		return;
 	}
@@ -43,7 +43,7 @@ exports.getById = (req, res) => {
 };
 exports.putUpdate = (req, res) => {
 	// Go to persistance layer
-	LogicLayer.putUpdate(req.params.id, (err, data) => {
+	LogicLayer.putUpdate(req.params.id, req.body, (err, data) => {
 		if (err) {
 			res.status(500).send({
 				message: err.message || "Error updating Tutorial with id=" + req.params.id

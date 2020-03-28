@@ -1,9 +1,9 @@
 const db = require("../../models");
-const Tutorial = db.tutorials;
+const Review = db.reviews;
 const Op = db.Sequelize.Op;
 // LOGIC
 exports.createNew = (params, result) => {
-	Tutorial.create(params)
+	Review.create(params)
 		.then(data => {
 			result(null, data);
 		})
@@ -13,9 +13,9 @@ exports.createNew = (params, result) => {
 		});
 };
 exports.getList = (params, result) => {
-	const title = params.title;
-	var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-	Tutorial.findAll({ where: condition })
+	const ranking = params.ranking;
+	var condition = ranking ? { ranking: { [Op.like]: `%${ranking}%` } } : null;
+	Review.findAll({ where: condition })
 		.then(data => {
 			result(null, data);
 		})
@@ -25,7 +25,7 @@ exports.getList = (params, result) => {
 		});
 };
 exports.getById = (id, result) => {
-	Tutorial.findByPk(id)
+    Review.findByPk({ id, include: Ship} )
 		.then(data => {
 			result(null, data);
 		})
@@ -34,19 +34,13 @@ exports.getById = (id, result) => {
 			return;
 		});
 };
-exports.putUpdate = (id, result) => {
-	Tutorial.update(req.body, {where: { id: id }})
+exports.putUpdate = (id, params, result) => {
+	Review.update(params, {where: { id: id }})
 		.then(num => {
 			if (num == 1) {
 				result(null, data);
-				// res.send({
-				// 	message: "Tutorial was updated successfully."
-				// });
 			} else {
 				result(null, data);
-				// res.send({
-				// 	message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found or req.body is empty!`
-				// });
 			}
 		})
 		.catch(err => {
@@ -55,22 +49,12 @@ exports.putUpdate = (id, result) => {
 		});
 };
 exports.delete = (id, result) => {
-	// Tutorial.destroy({
-	// 	where: {},
-	// 	truncate: false
-	// })
-	Tutorial.destroy(req.body, {where: { id: id }})
+	Review.destroy({}, {where: { id: id }})
 		.then(num => {
 			if (num == 1) {
 				result(null, data);
-				// res.send({
-				// 	message: "Tutorial was deleted successfully."
-				// });
 			} else {
 				result(null, data);
-				// res.send({
-				// 	message: `Cannot delete Tutorial with id=${id}. Maybe Tutorial was not found or req.body is empty!`
-				// });
 			}
 		})
 		.catch(err => {

@@ -1,5 +1,6 @@
 const db = require("../../models");
 const Review = db.reviews;
+const Destination = db.destinations;
 const Op = db.Sequelize.Op;
 // LOGIC
 exports.createNew = (params, result) => {
@@ -15,7 +16,7 @@ exports.createNew = (params, result) => {
 exports.getList = (params, result) => {
 	const ranking = params.ranking;
 	var condition = ranking ? { ranking: { [Op.like]: `%${ranking}%` } } : null;
-	Review.findAll({ where: condition })
+	Review.findAll({ where: condition})
 		.then(data => {
 			result(null, data);
 		})
@@ -25,7 +26,7 @@ exports.getList = (params, result) => {
 		});
 };
 exports.getById = (id, result) => {
-    Review.findByPk({ id, include: Ship} )
+    Review.findByPk(id)
 		.then(data => {
 			result(null, data);
 		})

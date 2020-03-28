@@ -19,7 +19,7 @@ exports.createNew = (req, res) => {
 };
 exports.getList = (req, res) => {
 	// Go to persistance layer
-	LogicLayer.getList(req.body, (err, data) => {
+	LogicLayer.getList(req.params, (err, data) => {
 		if (err) {
 			res.status(500).send({
 				message: err.message || "Some error occurred while retrieving tutorials."

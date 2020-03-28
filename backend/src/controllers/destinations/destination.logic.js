@@ -25,7 +25,7 @@ exports.getList = (params, result) => {
 		});
 };
 exports.getById = (id, result) => {
-	Destination.findByPk(id)
+	Destination.findByPK(id)
 		.then(data => {
 			result(null, data);
 		})
@@ -35,7 +35,9 @@ exports.getById = (id, result) => {
 		});
 };
 exports.putUpdate = (id, params, result) => {
-	Destination.update(params, {where: { id: id }})
+	Destination.update(params, {
+			where: { id: id }
+		})
 		.then(num => {
 			if (num == 1) {
 				result(null, {changes: true});
@@ -53,7 +55,23 @@ exports.delete = (id, result) => {
 	// 	where: {},
 	// 	truncate: false
 	// })
-	Destination.destroy({where: { id: id }})
+	// Destination.destroy({where: { id: id }})
+	// 	.then(num => {
+	// 		if (num == 1) {
+	// 			result(null, {deleted: true});
+	// 		} else {
+	// 			result(null, {deleted: false});
+	// 		}
+	// 	})
+	// 	.catch(err => {
+	// 		result(err, null);
+	// 		return;
+	// 	});
+	Destination.update({
+		available: false
+	}, {
+		where: { id: id }
+		})
 		.then(num => {
 			if (num == 1) {
 				result(null, {deleted: true});
